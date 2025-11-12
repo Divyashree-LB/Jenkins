@@ -10,18 +10,15 @@ pipeline {
 
         stage('Build') {
             steps {
-                echo 'Installing dependencies...'
-                sh '''
-                  apt-get update -y
-                  apt-get install -y python3
-                '''
+                echo 'Checking Python version...'
+                sh 'python3 --version || echo "Python not installed!"'
             }
         }
 
         stage('Run Python Script') {
             steps {
-                echo 'Running the custom Python script...'
-                sh 'python3 pipeline/pipeline_test.py'
+                echo 'Running the Python script...'
+                sh 'python3 pipeline_test.py'
             }
         }
     }
