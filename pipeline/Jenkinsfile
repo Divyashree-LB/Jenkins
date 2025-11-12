@@ -23,3 +23,32 @@ pipeline {
     }
 }
 
+pipeline {
+    agent any
+
+    stages {
+        stage('Checkout') {
+            steps {
+                git branch: 'main', url: 'git@github.com:Divyashree-LB/Jenkins.git'
+            }
+        }
+
+        stage('Build') {
+            steps {
+                echo 'Installing dependencies...'
+                // Remove sudo because Jenkins already runs as a system user
+                sh '''
+                apt-get update -y
+                apt-get install -y python3
+                '''
+            }
+        }
+
+        stage('Run Python Script') {
+            steps {
+                echo 'Running the custom Python script...'
+                sh 'python3 pipeline/pipeline_test.py'
+            }
+        }
+    }
+}
